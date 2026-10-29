@@ -70,6 +70,7 @@ export default function Admin() {
           <input className="field" type="password" placeholder="Clave de quien organiza" value={input} onChange={(e) => setInput(e.target.value)} autoFocus />
           {error && <span style={{ color: "#b3261e", fontSize: 14 }}>{error}</span>}
           <button className="btn btn-ink" disabled={!input}>Entrar</button>
+          <a href="/" className="link-btn" style={{ textAlign: "center", color: "var(--mute)" }}>← Volver a la invitación</a>
         </form>
       </main>
     );
@@ -93,7 +94,8 @@ export default function Admin() {
             <span className="label">Panel de quien organiza · se actualiza solo</span>
             <h1 className="h2">{EVENT.title}</h1>
           </div>
-          <div className="row" style={{ gap: 8 }}>
+          <div className="row" style={{ gap: 8, flexWrap: "wrap" }}>
+            <a className="small-btn row" href="/" style={{ background: "transparent", border: "1.5px solid var(--line)", color: "var(--ink)", textDecoration: "none" }}>← Invitación</a>
             <button className="small-btn btn-ink" onClick={exportCsv}>Descargar Excel (CSV)</button>
             <button className="small-btn" style={{ background: "transparent", border: "1.5px solid var(--line)" }} onClick={() => { try { localStorage.removeItem(KEY); } catch {} setKey(""); setRows(null); }}>Salir</button>
           </div>

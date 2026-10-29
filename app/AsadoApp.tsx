@@ -66,6 +66,18 @@ const draftFrom = (me: MyRsvp | null, cfg: EventConfig): Draft => ({
   method: me?.method ?? Object.keys(cfg.payments)[0],
 });
 
+// Entrada discreta al panel de quien organiza (pide clave)
+function OrganizerLink() {
+  return (
+    <a href="/admin" className="org-link" aria-label="Entrar como organizador" title="Soy organizador">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden>
+        <circle cx="12" cy="8" r="4" />
+        <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" />
+      </svg>
+    </a>
+  );
+}
+
 const Embers = memo(function Embers() {
   return (
     <div className="embers" aria-hidden>
@@ -360,7 +372,10 @@ export default function AsadoApp({ cfg }: { cfg: EventConfig }) {
               <Embers />
               <div style={{ position: "absolute", left: -60, right: -60, bottom: -120, height: 460, background: "radial-gradient(ellipse at 50% 70%,rgba(255,90,31,.38),transparent 62%)", animation: "glow 4s ease-in-out infinite", pointerEvents: "none" }} />
               <div className="col between intro-body" style={{ position: "relative", minHeight: "100%", gap: 40, padding: "96px 28px calc(44px + var(--safe-b))", animation: "rise .7s ease" }}>
-                <span className="kicker">{cfg.intro.kicker}</span>
+                <div className="row between">
+                  <span className="kicker">{cfg.intro.kicker}</span>
+                  <OrganizerLink />
+                </div>
                 <div className="col" style={{ gap: 28 }}>
                   <div className="col" style={{ gap: 16 }}>
                     <p className="intro-lead" style={{ margin: 0, letterSpacing: "-.025em", textWrap: "pretty" }}>
@@ -383,7 +398,10 @@ export default function AsadoApp({ cfg }: { cfg: EventConfig }) {
               <div className="col pad-top" style={{ position: "relative", padding: "72px 24px 40px", gap: 28, animation: "rise .5s ease" }}>
                 <div className="row between">
                   <span className="kicker">Estás invitado</span>
-                  <span className="mono muted" style={{ fontSize: 11, letterSpacing: ".1em" }}>{cfg.dateShort}</span>
+                  <div className="row" style={{ gap: 12 }}>
+                    <span className="mono muted" style={{ fontSize: 11, letterSpacing: ".1em" }}>{cfg.dateShort}</span>
+                    <OrganizerLink />
+                  </div>
                 </div>
                 <div className="col" style={{ gap: 6 }}>
                   <h1 className="h1">{titleHead}<br />{titleMid && titleMid + " "}<span className="ember">{titleLast}</span></h1>
@@ -717,6 +735,8 @@ export default function AsadoApp({ cfg }: { cfg: EventConfig }) {
                       <button className="link-btn" onClick={() => { setD(draftFrom(me, cfg)); setScreen("rsvp"); }}>Editar mi respuesta</button>
                       <span className="muted">·</span>
                       <button className="link-btn" onClick={cancelRsvp} disabled={busy}>Borrar respuesta</button>
+                      <span className="muted">·</span>
+                      <a className="link-btn" href="/admin">Soy organizador</a>
                     </div>
                   </div>
                 )}

@@ -175,3 +175,7 @@ tr.no td { color: var(--mute2); }
   .intro-body { padding-top: calc(40px + var(--safe-t)) !important; padding-bottom: calc(24px + var(--safe-b)) !important; gap: 24px !important; }
   .intro-body .lead { font-size: 15px; }
 }
+
+/* Personita: entrada al panel de quien organiza */
+.org-link { width: 36px; height: 36px; flex: none; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: var(--mute2); border: 1px solid rgba(245, 237, 225, .16); background: rgba(245, 237, 225, .04); transition: color .2s, border-color .2s; }
+.org-link:hover, .org-link:active { color: var(--peach); border-color: rgba(255, 179, 138, .5); }
