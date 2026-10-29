@@ -79,7 +79,7 @@ function OrganizerLink() {
   );
 }
 
-const Embers = memo(function Embers() {
+export const Embers = memo(function Embers() {
   return (
     <div className="embers" aria-hidden>
       {Array.from({ length: 22 }, (_, i) => (
