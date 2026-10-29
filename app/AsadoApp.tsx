@@ -305,11 +305,6 @@ export default function AsadoApp({ cfg }: { cfg: EventConfig }) {
 
   const shareUrl = typeof window !== "undefined" ? window.location.origin : "";
   const shareText = `¡${cfg.title} el ${cfg.dateLabel.toLowerCase()}! 🔥 Confirma aquí: ${shareUrl}`;
-  const organizerMsg = me
-    ? me.attending === "si"
-      ? `Hola ${cfg.organizer.name}! Confirmé para el ${cfg.title} 🔥\n• ${me.name}${me.guests ? ` +${me.guests}` : ""}\n• ${rideLine(me)}\n• Aporte: ${money(meSavedTotal)} por ${me.method}${me.paid ? " (ya pagué)" : ""}`
-      : `Hola ${cfg.organizer.name}! Esta vez no puedo ir al ${cfg.title}. ¡Que lo disfruten!`
-    : "";
   const isIOS = typeof navigator !== "undefined" && /iPad|iPhone|iPod/.test(navigator.userAgent);
   const gcal = (iso: string) => new Date(iso).toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
   const calUrl = isIOS
@@ -706,7 +701,6 @@ export default function AsadoApp({ cfg }: { cfg: EventConfig }) {
                       <a className="btn btn-ghost" href={calUrl} target={isIOS ? undefined : "_blank"} rel="noopener noreferrer">Al calendario</a>
                       <a className="btn btn-ghost" href={`https://wa.me/?text=${encodeURIComponent(shareText)}`} target="_blank" rel="noopener noreferrer">Invitar a alguien</a>
                     </div>
-                    <a className="btn btn-ghost" href={`https://wa.me/${cfg.organizer.whatsapp}?text=${encodeURIComponent(organizerMsg)}`} target="_blank" rel="noopener noreferrer">Avisarle a {cfg.organizer.name} por WhatsApp</a>
                     {me.ride === "rider" && !me.carId && (
                       <div className="col" style={{ gap: 12, padding: 18, borderRadius: 22, border: "1.5px dashed rgba(255,90,31,.6)", background: "rgba(255,90,31,.08)" }}>
                         <span className="t15">Estás en la lista de &quot;Buscando cupo&quot;</span>
@@ -729,7 +723,6 @@ export default function AsadoApp({ cfg }: { cfg: EventConfig }) {
                     <h2 className="h2 big">Te vamos<br />a extrañar</h2>
                     <p className="lead" style={{ margin: 0 }}>Gracias por avisar{me.name ? `, ${firstName(me.name)}` : ""}. Si cambias de plan, aquí sigue la invitación.</p>
                     <button className="btn btn-ghost" style={{ height: 56, fontSize: 16 }} onClick={() => { set({ attending: "si" }); setScreen("rsvp"); }}>Cambiar respuesta</button>
-                    <a className="btn btn-ghost" href={`https://wa.me/${cfg.organizer.whatsapp}?text=${encodeURIComponent(organizerMsg)}`} target="_blank" rel="noopener noreferrer">Avisarle a {cfg.organizer.name}</a>
                   </div>
                 )}
                 {!me && (

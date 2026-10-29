@@ -40,8 +40,8 @@ export const EVENT = {
   maxGuests: 4, // acompañantes máximos por invitado
   extraOptions: [0, 10000, 20000, 50000],
 
-  // Quien organiza (WhatsApp en formato internacional, sin + ni espacios)
-  organizer: { name: "Camila", whatsapp: "573000000000" },
+  // Quien organiza
+  organizer: { name: "Camila" },
 
   // Cuentas para pagar. Pon null en el método que no aplique.
   // Bre-B: pon tu llave tal cual (celular, correo, cédula o alias @...).
