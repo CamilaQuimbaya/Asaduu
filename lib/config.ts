@@ -30,9 +30,9 @@ export const EVENT = {
 
   // Lugar
   place: "Finca en Zipaquirá",
-  placeSub: "Cundinamarca · a 1 h de Bogotá",
-  location: "Zipaquirá, Cundinamarca",
-  mapsUrl: "https://maps.google.com/?q=Zipaquira",
+  placeSub: "San Simón La Quinta · a 1 h de Bogotá",
+  location: "San Simón La Quinta, Zipaquirá, Cundinamarca",
+  mapsUrl: "https://maps.app.goo.gl/keMTWmznnJ3gEx8N6",
 
   // Plata
   fee: 20000, // cuota por persona (COP)
@@ -46,7 +46,7 @@ export const EVENT = {
   // Cuentas para pagar. Pon null en el método que no aplique.
   // Bre-B: pon tu llave tal cual (celular, correo, cédula o alias @...).
   payments: {
-    "Bre-B": "@tullave",
+    "Bre-B": "1024502681",
     Nequi: "300 000 0000",
     Daviplata: "300 000 0000",
     Bancolombia: "Ahorros 000-000000-00",
