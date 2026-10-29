@@ -652,7 +652,7 @@ export default function AsadoApp({ cfg }: { cfg: EventConfig }) {
                             <button className="small-btn btn-ink" onClick={() => copyAccount(account)}>{copied ? "Copiado ✓" : "Copiar"}</button>
                           </div>
                         ) : (
-                          <span className="sub">Le pagas en efectivo a {cfg.organizer.name} el día del asado.</span>
+                          <span className="sub">Entrégale el efectivo a {cfg.organizer.name} <b>antes del asado</b>, para alcanzar a comprar la carne, el carbón y todo lo demás.</span>
                         )}
                       </div>
                     </div>
