@@ -54,7 +54,8 @@ input::placeholder { color: var(--mute2); }
 .scr { position: absolute; inset: 0; }
 .dark { background: var(--char); color: var(--cream); }
 .light { background: var(--cream); color: var(--ink); }
-.scroll { overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; }
+.scroll { overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; }
+.scroll::-webkit-scrollbar { display: none; }
 .col { display: flex; flex-direction: column; }
 .row { display: flex; align-items: center; }
 .between { justify-content: space-between; }
