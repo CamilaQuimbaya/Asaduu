@@ -47,6 +47,7 @@ input::placeholder { color: var(--mute2); }
   .device-inner { border-radius: 0; }
   .statusbar, .homebar { display: none; }
   .pad-top { padding-top: calc(28px + var(--safe-t)) !important; }
+  .intro-body { padding-top: calc(64px + var(--safe-t)) !important; }
 }
 
 /* ── Pantallas ── */
@@ -165,3 +166,11 @@ table { width: 100%; border-collapse: collapse; font: 400 14px var(--body); }
 th { text-align: left; font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--mute); padding: 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
 td { padding: 12px; border-bottom: 1px solid rgba(31, 24, 18, .06); vertical-align: top; }
 tr.no td { color: var(--mute2); }
+
+/* Intro: más compacta en celulares bajitos (iPhone SE, Android pequeños) */
+.intro-lead { font: 600 34px/1.1 var(--display); }
+@media (max-height: 700px) {
+  .intro-lead { font-size: 27px; }
+  .intro-body { padding-top: calc(40px + var(--safe-t)) !important; padding-bottom: calc(24px + var(--safe-b)) !important; gap: 24px !important; }
+  .intro-body .lead { font-size: 15px; }
+}

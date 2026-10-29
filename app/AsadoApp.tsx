@@ -4,7 +4,7 @@ import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { EventConfig } from "@/lib/config";
 import type { MyRsvp, PublicState, Ride } from "@/lib/rsvp";
 
-type Screen = "invite" | "rsvp" | "ride" | "pay" | "done" | "hub";
+type Screen = "intro" | "invite" | "rsvp" | "ride" | "pay" | "done" | "hub";
 type Tab = "carros" | "fondo" | "llevar" | "dia";
 
 interface Draft {
@@ -89,7 +89,7 @@ export default function AsadoApp({ cfg }: { cfg: EventConfig }) {
   const [token, setToken] = useState<string | null>(null);
   const [data, setData] = useState<PublicState | null>(null);
   const [loadError, setLoadError] = useState(false);
-  const [screen, setScreen] = useState<Screen>("invite");
+  const [screen, setScreen] = useState<Screen>("intro");
   const [tab, setTab] = useState<Tab>("carros");
   const [d, setD] = useState<Draft>(() => draftFrom(null, cfg));
   const [busy, setBusy] = useState(false);
@@ -320,7 +320,7 @@ export default function AsadoApp({ cfg }: { cfg: EventConfig }) {
   const titleHead = words[0];
   const titleMid = words.slice(1, -1).join(" ");
 
-  const dark = screen === "invite" || screen === "done";
+  const dark = screen === "intro" || screen === "invite" || screen === "done";
   const statusColor = dark ? "#f5ede1" : "#1f1812";
   const pctOf = (n: number) => Math.min(100, (n / cfg.fundGoal) * 100).toFixed(1) + "%";
 
@@ -355,6 +355,27 @@ export default function AsadoApp({ cfg }: { cfg: EventConfig }) {
                   <span className="label" style={{ color: "#a8988a" }}>Prendiendo el carbón…</span>
                 </>
               )}
+            </div>
+          )}
+
+          {data && screen === "intro" && (
+            <div className="scr dark scroll">
+              <Embers />
+              <div style={{ position: "absolute", left: -60, right: -60, bottom: -120, height: 460, background: "radial-gradient(ellipse at 50% 70%,rgba(255,90,31,.38),transparent 62%)", animation: "glow 4s ease-in-out infinite", pointerEvents: "none" }} />
+              <div className="col between intro-body" style={{ position: "relative", minHeight: "100%", gap: 40, padding: "96px 28px calc(44px + var(--safe-b))", animation: "rise .7s ease" }}>
+                <span className="kicker">{cfg.intro.kicker}</span>
+                <div className="col" style={{ gap: 28 }}>
+                  <div className="col" style={{ gap: 16 }}>
+                    <p className="intro-lead" style={{ margin: 0, letterSpacing: "-.025em", textWrap: "pretty" }}>
+                      {cfg.intro.lead} <span className="ember">{cfg.intro.highlight}</span>
+                    </p>
+                    <p className="lead" style={{ margin: 0 }}>{cfg.intro.text}</p>
+                  </div>
+                  <div style={{ height: 1, background: "rgba(245,237,225,.16)" }} />
+                  <span className="mono" style={{ fontSize: 12, fontWeight: 500, letterSpacing: ".1em", color: "#a8988a" }}>{cfg.intro.meta}</span>
+                </div>
+                <button className="btn" style={{ background: "#f5ede1", color: "#18120e" }} onClick={() => setScreen("invite")}>{cfg.intro.button}</button>
+              </div>
             </div>
           )}
 

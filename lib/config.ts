@@ -4,6 +4,16 @@
 // ─────────────────────────────────────────────────────────────
 
 export const EVENT = {
+  // Pantalla de intro (lo primero que ve el invitado)
+  intro: {
+    kicker: "Una invitación para ti",
+    lead: "Este año no sería lo mismo sin ti. Queremos que seas parte del",
+    highlight: "gran asado de planeación",
+    text: "Un día para encontrarnos, comer rico alrededor del fuego y soñar juntos lo que viene.",
+    meta: "SÁB 12 DIC · ZIPAQUIRÁ",
+    button: "Abrir invitación",
+  },
+
   title: "Asado en Zipa",
   tagline:
     "Carne al carbón, buena música y el frío rico de la sabana. Confirma, cuadra tu transporte y listo.",
