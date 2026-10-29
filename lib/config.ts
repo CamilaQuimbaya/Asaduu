@@ -47,9 +47,6 @@ export const EVENT = {
   // Bre-B: pon tu llave tal cual (celular, correo, cédula o alias @...).
   payments: {
     "Bre-B": "1024502681",
-    Nequi: "300 000 0000",
-    Daviplata: "300 000 0000",
-    Bancolombia: "Ahorros 000-000000-00",
     Efectivo: null,
   } as Record<string, string | null>,
   // Métodos que se copian tal cual (los demás copian solo los números)
