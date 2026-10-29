@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { EventConfig } from "@/lib/config";
 import type { MyRsvp, PublicState, Ride } from "@/lib/rsvp";
@@ -69,12 +70,12 @@ const draftFrom = (me: MyRsvp | null, cfg: EventConfig): Draft => ({
 // Entrada discreta al panel de quien organiza (pide clave)
 function OrganizerLink() {
   return (
-    <a href="/admin" className="org-link" aria-label="Entrar como organizador" title="Soy organizador">
+    <Link href="/admin" className="org-link" aria-label="Entrar como organizador" title="Soy organizador">
       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden>
         <circle cx="12" cy="8" r="4" />
         <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" />
       </svg>
-    </a>
+    </Link>
   );
 }
 
@@ -736,7 +737,7 @@ export default function AsadoApp({ cfg }: { cfg: EventConfig }) {
                       <span className="muted">·</span>
                       <button className="link-btn" onClick={cancelRsvp} disabled={busy}>Borrar respuesta</button>
                       <span className="muted">·</span>
-                      <a className="link-btn" href="/admin">Soy organizador</a>
+                      <Link className="link-btn" href="/admin">Soy organizador</Link>
                     </div>
                   </div>
                 )}
