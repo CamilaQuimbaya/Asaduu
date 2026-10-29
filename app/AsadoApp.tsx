@@ -651,9 +651,11 @@ export default function AsadoApp({ cfg }: { cfg: EventConfig }) {
                             <div className="col" style={{ gap: 2, minWidth: 0 }}><span className="sub" style={{ fontSize: 12 }}>{cfg.paymentLabels[d.method] ?? d.method} de {cfg.paymentOwners[d.method] ?? cfg.organizer.name}</span><span className="mono" style={{ fontSize: 17, fontWeight: 500, overflowWrap: "anywhere" }}>{account}</span></div>
                             <button className="small-btn btn-ink" onClick={() => copyAccount(account)}>{copied ? "Copiado ✓" : "Copiar"}</button>
                           </div>
-                        ) : (
-                          <span className="sub">Entrégale el efectivo a {cfg.organizer.name} <b>antes del asado</b>, para alcanzar a comprar la carne, el carbón y todo lo demás.</span>
-                        )}
+                        ) : null}
+                        <span className="sub">
+                          {account ? "Paga " : `Entrégale el efectivo a ${cfg.organizer.name} `}
+                          <b>antes del {cfg.payDeadline}</b>, para alcanzar a comprar la carne, el carbón y todo lo demás.
+                        </span>
                       </div>
                     </div>
                   );

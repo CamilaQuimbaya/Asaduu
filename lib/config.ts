@@ -49,6 +49,8 @@ export const EVENT = {
     "Bre-B": "1024502681",
     Efectivo: null,
   } as Record<string, string | null>,
+  // Fecha límite para pagar (para alcanzar a comprar todo)
+  payDeadline: "8 de diciembre",
   // Métodos que se copian tal cual (los demás copian solo los números)
   paymentsCopyAsIs: ["Bre-B"],
   paymentLabels: { "Bre-B": "Llave Bre-B" } as Record<string, string>,
