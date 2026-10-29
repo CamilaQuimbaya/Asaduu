@@ -44,12 +44,17 @@ export const EVENT = {
   organizer: { name: "Camila", whatsapp: "573000000000" },
 
   // Cuentas para pagar. Pon null en el método que no aplique.
+  // Bre-B: pon tu llave tal cual (celular, correo, cédula o alias @...).
   payments: {
+    "Bre-B": "@tullave",
     Nequi: "300 000 0000",
     Daviplata: "300 000 0000",
     Bancolombia: "Ahorros 000-000000-00",
     Efectivo: null,
   } as Record<string, string | null>,
+  // Métodos que se copian tal cual (los demás copian solo los números)
+  paymentsCopyAsIs: ["Bre-B"],
+  paymentLabels: { "Bre-B": "Llave Bre-B" } as Record<string, string>,
 
   diets: ["Ninguna", "Vegetariano", "Sin cerdo", "Sin gluten", "Alergia"],
   fromOptions: ["Portal Norte", "Usaquén", "Chía", "Suba", "Cajicá"],

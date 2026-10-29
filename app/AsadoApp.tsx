@@ -208,7 +208,9 @@ export default function AsadoApp({ cfg }: { cfg: EventConfig }) {
 
   let nextDisabled = busy;
   if (screen === "rsvp") nextDisabled ||= !d.attending || (yes && !d.name.trim());
-  if (screen === "ride") nextDisabled ||= !d.ride || (d.ride === "rider" && !myCar);
+  // Si necesita cupo puede seguir sin elegir carro: queda en "Buscando cupo".
+  if (screen === "ride") nextDisabled ||= !d.ride;
+  const seeking = d.ride === "rider" && !myCar;
 
   const rideLine = (r: Pick<Draft, "ride" | "seats" | "from" | "time" | "carId">) => {
     if (r.ride === "driver") return `Llevas ${r.seats} desde ${r.from}, ${r.time} a.m.`;
@@ -286,7 +288,7 @@ export default function AsadoApp({ cfg }: { cfg: EventConfig }) {
   }
 
   async function copyAccount(value: string) {
-    const digits = value.replace(/[^\d]/g, "");
+    const digits = cfg.paymentsCopyAsIs.includes(d.method) ? value.trim() : value.replace(/[^\d]/g, "");
     try {
       await navigator.clipboard.writeText(digits);
     } catch {
@@ -508,7 +510,7 @@ export default function AsadoApp({ cfg }: { cfg: EventConfig }) {
                       </p>
                     </div>
                     <div className="col" style={{ gap: 8 }}>
-                      {([["driver", "CAR", "Tengo carro", "Ofrezco cupos"], ["rider", "SEAT", "Necesito cupo", `${freeSeats} puesto${freeSeats === 1 ? "" : "s"} disponible${freeSeats === 1 ? "" : "s"}`], ["own", "OWN", "Llego por mi cuenta", "Bus, moto o ya estoy allá"]] as const).map(([k, tag, label, sub]) => {
+                      {([["driver", "CAR", "Tengo carro", "Ofrezco cupos"], ["rider", "SEAT", "Necesito cupo", freeSeats ? `${freeSeats} puesto${freeSeats === 1 ? "" : "s"} disponible${freeSeats === 1 ? "" : "s"}` : "Te anotamos en la lista"], ["own", "OWN", "Llego por mi cuenta", "Bus, moto o ya estoy allá"]] as const).map(([k, tag, label, sub]) => {
                         const sel = d.ride === k;
                         return (
                           <button key={k} aria-pressed={sel} className={"opt row" + (sel ? " on" : "")} style={{ gap: 14, padding: 16, borderRadius: 20 }} onClick={() => set({ ride: k })}>
@@ -556,19 +558,24 @@ export default function AsadoApp({ cfg }: { cfg: EventConfig }) {
                             ))}
                           </div>
                           {myRiders > 0 && <span className="sub">Ya llevas {myRiders} pasajero{myRiders === 1 ? "" : "s"}.</span>}
+                          {data.seekers.length > 0 && (
+                            <span className="sub" style={{ color: "#1f1812" }}>🙋 <b>{data.seekers.length} buscando cupo:</b> {data.seekers.join(", ")}. Cuando confirmes, pueden subirse a tu carro.</span>
+                          )}
                         </div>
                       </div>
                     )}
 
                     {d.ride === "rider" && (
                       <div className="col rise" style={{ gap: 10 }}>
-                        <span className="label">Elige tu carro</span>
-                        {rideCars.length === 0 && (
-                          <div className="empty">
-                            <span className="t15">Aún no hay carros</span>
-                            <span className="sub">Puedes seguir sin elegir: elige &quot;Llego por mi cuenta&quot; por ahora y vuelve luego a cambiarlo, o avísale a quien organiza.</span>
+                        {freeSeats === 0 ? (
+                          <div className="empty" style={{ borderColor: "#ff5a1f", background: "#fff3e8" }}>
+                            <span className="t15">{rideCars.length ? "Los carros están llenos por ahora" : "Aún no hay carros disponibles"}</span>
+                            <span className="sub">Tranqui, sigue igual: quedas en la lista de <b>Buscando cupo</b> y los conductores te ven. Cuando alguien ofrezca puesto, edita tu respuesta y elige el carro.</span>
                           </div>
+                        ) : seeking && (
+                          <span className="sub">Elige un carro, o sigue sin elegir y quedas en la lista de <b>Buscando cupo</b>.</span>
                         )}
+                        {rideCars.length > 0 && <span className="label" style={{ paddingTop: 4 }}>Elige tu carro</span>}
                         {rideCars.map((c) => {
                           const sel = d.carId === c.id;
                           const full = c.others.length >= c.seats && !sel;
@@ -640,13 +647,13 @@ export default function AsadoApp({ cfg }: { cfg: EventConfig }) {
                       <div className="col" style={{ gap: 10 }}>
                         <span className="label">Cómo pagas</span>
                         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-                          {Object.keys(cfg.payments).map((m) => (
-                            <button key={m} aria-pressed={d.method === m} className={"opt" + (d.method === m ? " on" : "")} style={{ height: 52, borderRadius: 16, font: "600 15px var(--body)", textAlign: "center" }} onClick={() => { set({ method: m }); setCopied(false); }}>{m}</button>
+                          {Object.keys(cfg.payments).map((m, i, all) => (
+                            <button key={m} aria-pressed={d.method === m} className={"opt" + (d.method === m ? " on" : "")} style={{ height: 52, borderRadius: 16, font: "600 15px var(--body)", textAlign: "center", gridColumn: all.length % 2 && i === all.length - 1 ? "span 2" : undefined }} onClick={() => { set({ method: m }); setCopied(false); }}>{m}</button>
                           ))}
                         </div>
                         {account ? (
                           <div className="row between" style={{ padding: "14px 16px", borderRadius: 16, border: "1.5px dashed rgba(31,24,18,.2)", gap: 12 }}>
-                            <div className="col" style={{ gap: 2, minWidth: 0 }}><span className="sub" style={{ fontSize: 12 }}>{d.method} de {cfg.organizer.name}</span><span className="mono" style={{ fontSize: 17, fontWeight: 500 }}>{account}</span></div>
+                            <div className="col" style={{ gap: 2, minWidth: 0 }}><span className="sub" style={{ fontSize: 12 }}>{cfg.paymentLabels[d.method] ?? d.method} de {cfg.organizer.name}</span><span className="mono" style={{ fontSize: 17, fontWeight: 500, overflowWrap: "anywhere" }}>{account}</span></div>
                             <button className="small-btn btn-ink" onClick={() => copyAccount(account)}>{copied ? "Copiado ✓" : "Copiar"}</button>
                           </div>
                         ) : (
@@ -661,7 +668,7 @@ export default function AsadoApp({ cfg }: { cfg: EventConfig }) {
               <div className="cta-wrap abs">
                 <button className="btn btn-ink" disabled={nextDisabled} onClick={next}>
                   {busy && <span className="spinner" />}
-                  {screen === "rsvp" ? (d.attending === "no" ? "Enviar respuesta" : "Continuar") : screen === "ride" ? "Continuar" : `${me ? "Guardar cambios" : "Confirmar"} · ${money(myTotal)}`}
+                  {screen === "rsvp" ? (d.attending === "no" ? "Enviar respuesta" : "Continuar") : screen === "ride" ? (seeking ? "Continuar · buscando cupo" : "Continuar") : `${me ? "Guardar cambios" : "Confirmar"} · ${money(myTotal)}`}
                 </button>
               </div>
             </div>
@@ -700,6 +707,15 @@ export default function AsadoApp({ cfg }: { cfg: EventConfig }) {
                       <a className="btn btn-ghost" href={`https://wa.me/?text=${encodeURIComponent(shareText)}`} target="_blank" rel="noopener noreferrer">Invitar a alguien</a>
                     </div>
                     <a className="btn btn-ghost" href={`https://wa.me/${cfg.organizer.whatsapp}?text=${encodeURIComponent(organizerMsg)}`} target="_blank" rel="noopener noreferrer">Avisarle a {cfg.organizer.name} por WhatsApp</a>
+                    {me.ride === "rider" && !me.carId && (
+                      <div className="col" style={{ gap: 12, padding: 18, borderRadius: 22, border: "1.5px dashed rgba(255,90,31,.6)", background: "rgba(255,90,31,.08)" }}>
+                        <span className="t15">Estás en la lista de &quot;Buscando cupo&quot;</span>
+                        <span style={{ font: "400 14px/1.4 var(--body)", color: "#d9ccbd" }}>
+                          {freeSeats > 0 ? `¡Ya hay ${freeSeats} puesto${freeSeats === 1 ? "" : "s"} libre${freeSeats === 1 ? "" : "s"}! Aparta el tuyo antes de que se llene.` : "Todavía no hay puestos libres. Vuelve a mirar en unos días o avísale a " + cfg.organizer.name + "."}
+                        </span>
+                        {freeSeats > 0 && <button className="btn btn-ember" style={{ height: 48, fontSize: 16 }} onClick={() => { setD(draftFrom(me, cfg)); setScreen("ride"); }}>Elegir carro</button>}
+                      </div>
+                    )}
                     <button className="btn btn-ember" onClick={() => setScreen("hub")}>Ver la logística del día</button>
                     <div className="row" style={{ justifyContent: "center", gap: 8 }}>
                       <button className="link-btn" onClick={() => { setD(draftFrom(me, cfg)); setScreen("rsvp"); }}>Editar mi respuesta</button>
