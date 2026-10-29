@@ -52,6 +52,8 @@ export const EVENT = {
   // Métodos que se copian tal cual (los demás copian solo los números)
   paymentsCopyAsIs: ["Bre-B"],
   paymentLabels: { "Bre-B": "Llave Bre-B" } as Record<string, string>,
+  // A nombre de quién está cada cuenta (si no se pone, sale quien organiza)
+  paymentOwners: { "Bre-B": "Rodolfo Moncada" } as Record<string, string>,
 
   diets: ["Ninguna", "Vegetariano", "Sin cerdo", "Sin gluten", "Alergia"],
   fromOptions: ["Portal Norte", "Usaquén", "Chía", "Suba", "Cajicá"],
